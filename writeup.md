@@ -86,4 +86,5 @@ pipeline localises it on an image.
 
 Another potential improvement could be to use color selection for all known
 lane line colors such as yellow and white. It would help to reduce amount of 
-false lines coming from dirt and differences in asphalt colors.
+false lines coming from dirt and differences in asphalt colors (mostly dark
+colors).
