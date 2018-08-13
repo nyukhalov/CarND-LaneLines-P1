@@ -31,7 +31,7 @@ Then I applied a Blur filter with kernel size equal to 5. This default value wor
 **1.3. Applying the Canny edges detector**
 
 Choosing the low and high thresholds I wanted to get rid of as many noise as I can, meanwhile keeping enough "useful" pixels.
-After running plenty tests I chose 30 and 60 as the values of the low and high threshold respectively.
+After running a plenty of tests I chose 30 and 60 as the values of the low and high threshold respectively.
 
 **1.4. Finding a region of interest**
 
@@ -53,11 +53,14 @@ Frame 2
 
 **1.6. Drawing a single line on the left and right lanes**
 
-In order to draw a single line on the left and right lanes, I modified the draw_lines() function by adding 4 steps:
-- assigning all the line to the left and right lanes (meanwhile filtering horizontal lines)
-- calculating average slope and x-intercept for the left and right lanes
-- filtering the slope and x-intercept using low pass filters
-- extrapolating the lines to get the final result
+In order to draw a single line on the left and right lanes, I modified the `draw_lines()` function by adding 4 steps:
+- Assigning all the lines to the left and right lanes (meanwhile filtering horizontal lines). The result of this step looks like this:
+  ![step1](test_images_output/intermediate-solidYellowCurve.jpg)
+- Calculating average slope and x-intercept for the left and right lanes
+- Filtering the slope and x-intercept using low pass filters. I decided to use a
+  low pass filter to make my pipeline less sensitive to a noise. It was a crucial step for getting acceptable results for the last video.
+- Extrapolating the lines to get the final result. The final result looks like this:
+  ![final result](test_images_output/solidYellowLeft.jpg)
 
 ### 2. Potential shortcomings
 
