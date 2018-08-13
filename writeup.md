@@ -81,6 +81,9 @@ image is too bright (which can happen when a car is moving towards the sun).
 
 ### 3. Possible improvements
 
-A possible improvement would be to ...
+A possible improvement would be to create a math model of lane lines so that the
+pipeline localises it on an image.
 
-Another potential improvement could be to ...
+Another potential improvement could be to use color selection for all known
+lane line colors such as yellow and white. It would help to reduce amount of 
+false lines coming from dirt and differences in asphalt colors.
