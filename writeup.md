@@ -59,15 +59,25 @@ In order to draw a single line on the left and right lanes, I modified the `draw
 - Calculating average slope and x-intercept for the left and right lanes
 - Filtering the slope and x-intercept using low pass filters. I decided to use a
   low pass filter to make my pipeline less sensitive to a noise. It was a crucial step for getting acceptable results for the last video.
-- Extrapolating the lines to get the final result. The final result looks like this:
+- Extrapolating the lines to get the final result.
   ![final result](test_images_output/solidYellowLeft.jpg)
 
 ### 2. Potential shortcomings
 
-One potential shortcoming would be what would happen when ... 
+One potential shortcoming would be what would happen when there is dirt or new
+asphalt on the road. In this case Hough transformation returns many "false" 
+lines which are not distinguishable from the "true" lane lines.
+It happened a lot in the last video ["challenge.mp4"](test_videos/challenge.mp4)
 
-Another shortcoming could be ...
+Another shortcoming could be that the pipeline does not validate the relation of
+the left and right lanes. So, if an image has too many false lines the pipeline
+will return wrong lanes positions which can lead a car to crash.
 
+Another shortcoming is the pipeline works only if the lanes are centered in the
+image. If not, the region of interest I use will not select the right pixels.
+
+Another shortcoming could be that the Canny edge detector will not work if the
+image is too bright (which can happen when a car is moving towards the sun).
 
 ### 3. Possible improvements
 
