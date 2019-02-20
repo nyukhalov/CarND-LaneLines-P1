@@ -9,6 +9,23 @@ When we drive, we use our eyes to decide where to go.  The lines on the road tha
 
 In this project, I've developed a pipeline to detect lane lines in images using Python and OpenCV. OpenCV means "Open-Source Computer Vision", which is a package that has many useful tools for analyzing images.  
 
+# Results
+
+The algorithm was applied to the test videos located in the [test_videos/](test_videos/) directory.
+Below you can see how the videos were processed be the algorithm.
+
+1. solidWhiteRight.mp4
+
+[![solidWhiteRight.mp4](http://img.youtube.com/vi/DDpEntsj850/0.jpg)](http://www.youtube.com/watch?v=DDpEntsj850)
+
+2. solidYellowLeft.mp4
+
+[![solidYellowLeft.mp4](http://img.youtube.com/vi/s869JDL7aOc/0.jpg)](http://www.youtube.com/watch?v=s869JDL7aOc)
+
+3. challenge.mp4
+
+[![challenge.mp4](http://img.youtube.com/vi/T7F6OovU1mg/0.jpg)](http://www.youtube.com/watch?v=T7F6OovU1mg)
+
 # Reflection
 
 ## 1. The pipeline
