@@ -3,37 +3,95 @@
 
 <img src="examples/laneLines_thirdPass.jpg" width="480" alt="Combined Image" />
 
-Overview
----
+# Overview
 
 When we drive, we use our eyes to decide where to go.  The lines on the road that show us where the lanes are act as our constant reference for where to steer the vehicle.  Naturally, one of the first things we would like to do in developing a self-driving car is to automatically detect lane lines using an algorithm.
 
-In this project you will detect lane lines in images using Python and OpenCV.  OpenCV means "Open-Source Computer Vision", which is a package that has many useful tools for analyzing images.  
+In this project I've developed a pipeline to detect lane lines in images using Python and OpenCV. OpenCV means "Open-Source Computer Vision", which is a package that has many useful tools for analyzing images.  
 
-To complete the project, two files will be submitted: a file containing project code and a file containing a brief write up explaining your solution. We have included template files to be used both for the [code](https://github.com/udacity/CarND-LaneLines-P1/blob/master/P1.ipynb) and the [writeup](https://github.com/udacity/CarND-LaneLines-P1/blob/master/writeup_template.md).The code file is called P1.ipynb and the writeup template is writeup_template.md 
+# Reflection
 
-To meet specifications in the project, take a look at the requirements in the [project rubric](https://review.udacity.com/#!/rubrics/322/view)
+## 1. The pipeline
+
+My pipeline consisted of 6 steps:
+- converting the images to grayscale
+- applying a Blur filter
+- applying the Canny edges detector
+- finding a region of interest
+- using the Hough algorithm for finding lines
+- drawing a single line on the left and right lanes
+
+**1.1. Converting the images to grayscale**
+
+First, I converted the images to grayscale using `cv2.cvtColor(img, cv2.COLOR_RGB2GRAY)`.
+
+**1.2. Applying a Blur filter**
+
+Then I applied a Blur filter with kernel size equal to 5. This default value worked well for me.
+
+**1.3. Applying the Canny edges detector**
+
+Choosing the low and high thresholds I wanted to get rid of as many noise as I can, meanwhile keeping enough "useful" pixels.
+After running a plenty of tests I chose 30 and 60 as the values of the low and high threshold respectively.
+
+**1.4. Finding a region of interest**
+
+At this step I tried to exclude from the region of interest as many useless pixels as I can.
+The final region of interest looks like this:
+![a region of interest](test_images_output/roi-solidWhiteCurve.jpg)
+
+**1.5. Using the Hough algorithm for finding lines**
+
+This step was challenging as I needed to choose parameters which must work well for all the test videos.
+I found two video frames on which my pipeline did not work well, and tuned the
+parameters until the algorithm gives good results.
+
+Frame 1:
+![frame1](test_images/challenge.jpg)
+
+Frame 2
+![frame2](test_images/challenge-2.jpg)
+
+**1.6. Drawing a single line on the left and right lanes**
+
+In order to draw a single line on the left and right lanes, I modified the `draw_lines()` function by adding 4 steps:
+- Assigning all the lines to the left and right lanes (meanwhile filtering horizontal lines). The result of this step looks like this:
+  ![step1](test_images_output/intermediate-solidYellowCurve.jpg)
+- Calculating average slope and x-intercept for the left and right lanes
+- Filtering the slope and x-intercept using low pass filters. I decided to use a
+  low pass filter to make my pipeline less sensitive to a noise. It was a crucial step for getting acceptable results for the last video.
+- Extrapolating the lines to get the final result.
+  ![final result](test_images_output/solidYellowLeft.jpg)
+
+## 2. Potential shortcomings
+
+One potential shortcoming would be what would happen when there is dirt or new
+asphalt on the road. In this case Hough transformation returns many "false" 
+lines which are not distinguishable from the "true" lane lines.
+It happened a lot in the last video ["challenge.mp4"](test_videos/challenge.mp4)
+
+Another shortcoming could be that the pipeline does not validate the relation of
+the left and right lanes. So, if an image has too many false lines the pipeline
+will return wrong lanes positions which can lead a car to crash.
+
+Another shortcoming is the pipeline works only if the lanes are centered in the
+image. If not, the region of interest I use will not select the right pixels.
+
+Another shortcoming could be that the Canny edge detector will not work if the
+image is too bright (which can happen when a car is moving towards the sun).
+
+## 3. Possible improvements
+
+A possible improvement would be to create a math model of lane lines so that the
+pipeline localises it on an image.
+
+Another potential improvement could be to use color selection for all known
+lane line colors such as yellow and white. It would help to reduce amount of 
+false lines coming from dirt and differences in asphalt colors (mostly dark
+colors).
 
 
-Creating a Great Writeup
----
-For this project, a great writeup should provide a detailed response to the "Reflection" section of the [project rubric](https://review.udacity.com/#!/rubrics/322/view). There are three parts to the reflection:
-
-1. Describe the pipeline
-
-2. Identify any shortcomings
-
-3. Suggest possible improvements
-
-We encourage using images in your writeup to demonstrate how your pipeline works.  
-
-All that said, please be concise!  We're not looking for you to write a book here: just a brief description.
-
-You're not required to use markdown for your writeup.  If you use another method please just submit a pdf of your writeup. Here is a link to a [writeup template file](https://github.com/udacity/CarND-LaneLines-P1/blob/master/writeup_template.md). 
-
-
-The Project
----
+# The Project
 
 ## If you have already installed the [CarND Term1 Starter Kit](https://github.com/udacity/CarND-Term1-Starter-Kit/blob/master/README.md) you should be good to go!   If not, you should install the starter kit to get started on this project. ##
 
@@ -50,7 +108,3 @@ Jupyter is an Ipython notebook where you can run blocks of code and see results 
 A browser window will appear showing the contents of the current directory.  Click on the file called "P1.ipynb".  Another browser window will appear displaying the notebook.  Follow the instructions in the notebook to complete the project.  
 
 **Step 3:** Complete the project and submit both the Ipython notebook and the project writeup
-
-## How to write a README
-A well written README file can enhance your project and portfolio.  Develop your abilities to create professional README files by completing [this free course](https://www.udacity.com/course/writing-readmes--ud777).
-
